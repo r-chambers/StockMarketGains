@@ -7,13 +7,19 @@ from flask import render_template, request, redirect, flash, url_for
 from YouLose import app
 from YouLose.forms import EnterStock
 
+def test(arg1,arg2):
+    return "You have bought {} at ${} per share".format(arg1,arg2)
+
 @app.route('/')
 @app.route('/home', methods=['GET', 'POST'])
 def home():
     form = EnterStock()
-    if form.validate_on_submit():
-        flash("User requested gains for {}, from date {}".format(form.stock.data, form.date_bought.data))
-        return redirect(url_for('home'))
+
+
+    if request.method == "POST":
+        if form.validate_on_submit():
+            flash(test(form.stock.data, form.date_bought.data))
+            return redirect(url_for('home'))
     """Renders the home page."""
     return render_template(
         'home.html',

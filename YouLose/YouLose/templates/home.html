@@ -1,16 +1,23 @@
 {% extends "base.html" %}
 
 {% block content %}
+
 <form action="{{ url_for('home') }}" method="POST" novalidate>
     {{ form.hidden_tag() }}
     <p>
-        {{ form.stock.label }} {{form.stock(size=4)}}
+        {{ form.stock.label }} {{ form.stock(size=4) }}
         {% for error in form.stock.errors %}
-        <span style="color: red;">[{{ error }}]</span>
+        <span class="column" style="color: red;">{{ error }}</span>
         {% endfor %}
     </p>
     <p>
-        {{ form.date_bought.label }} {{form.date_bought}}
+        {{ form.num_shares.label }} {{form.num_shares(size=10)}}
+        {% for error in form.num_shares.errors %}
+        <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.price.label }} {{form.price(size=10)}}
         {% for error in form.date_bought.errors %}
         <span style="color: red;">{{ error }}</span>
         {% endfor %}
@@ -21,11 +28,11 @@
 </form>
 {% with messages = get_flashed_messages() %}
         {% if messages %}
-        <ul>
             {% for message in messages %}
-            <li>{{ message }}</li>
+            <div class="stock-bought-msg">
+                {{ message }}
+            </div>
             {% endfor %}
-        </ul>
         {% endif %}
 {% endwith %}
 

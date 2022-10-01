@@ -1,0 +1,24 @@
+.stock-bought-msg {
+    color: blue;
+}
+
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    padding-left: 100px;
+    padding-right: 100px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.row {
+    display: flex;
+}
+
+.column {
+    flex: 50%;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}

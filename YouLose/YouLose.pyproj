@@ -83,6 +83,8 @@
     <Content Include="YouLose\templates\layoutold.html" />
     <Content Include="YouLose\templates\home.html" />
     <Content Include="YouLose\templates\base.html" />
+    <Content Include="YouLose\templates\login.html" />
+    <Content Include="YouLose\templates\signup.html" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Web.targets" />
   <!-- Specify pre- and post-build commands in the BeforeBuild and 

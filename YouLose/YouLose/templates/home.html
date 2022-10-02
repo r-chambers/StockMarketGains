@@ -1,23 +1,27 @@
 {% extends "base.html" %}
 
 {% block content %}
+<h1>Enter how many stocks you bought and what you paid</h1>
 
 <form action="{{ url_for('home') }}" method="POST" novalidate>
     {{ form.hidden_tag() }}
     <p>
-        {{ form.stock.label }} {{ form.stock(size=4) }}
+        {{ form.stock.label }} <br />
+        {{ form.stock(size=4) }} <br />
         {% for error in form.stock.errors %}
         <span class="column" style="color: red;">{{ error }}</span>
         {% endfor %}
     </p>
     <p>
-        {{ form.num_shares.label }} {{form.num_shares(size=10)}}
+        {{ form.num_shares.label }} <br />
+        {{form.num_shares(size=10)}} <br />
         {% for error in form.num_shares.errors %}
         <span style="color: red;">{{ error }}</span>
         {% endfor %}
     </p>
     <p>
-        {{ form.price.label }} {{form.price(size=10)}}
+        {{ form.price.label }} <br />
+        {{form.price(size=10)}} <br />
         {% for error in form.price.errors %}
         <span style="color: red;">{{ error }}</span>
         {% endfor %}

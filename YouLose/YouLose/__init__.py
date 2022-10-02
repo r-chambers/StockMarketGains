@@ -5,8 +5,8 @@ The flask application package.
 from flask import Flask
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-
-import os
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager, UserMixin, logout_user
 
 
 app = Flask(__name__)
@@ -17,12 +17,24 @@ app.config["SQLALCHEMY_ECHO"] = True;
 app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root:tootyfruitychickenbooty@127.0.0.1/youlose"
 
 db = SQLAlchemy(app)
+login = LoginManager(app)
 
-class User(db.Model):
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))
+
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(64), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-    stocks_bought = db.relationship('Post', backref='author', lazy='dynamic')
+    stocks_bought = db.relationship('Stock_Bought', backref='user', lazy='dynamic')
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
 
     def __repr__(self):
         return '<User {}>'.format(self.username)

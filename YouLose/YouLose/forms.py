@@ -9,3 +9,8 @@ class EnterStock(FlaskForm):
     #date_bought = DateField('Date you bought this stock', validators=[DataRequired(message='You must enter a date')])
     price = StringField('Price you paid per share', validators=[DataRequired(message='You must enter an amount') ])
     submit = SubmitField('Get profit!')
+
+class LoginForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired(message='You must enter a username')])
+    password = PasswordField('Password', validators=[DataRequired(message='You must enter a password')])
+    submit = SubmitField('Log in')

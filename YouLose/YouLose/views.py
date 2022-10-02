@@ -5,20 +5,32 @@ Routes and views for the flask application.
 from datetime import datetime
 from flask import render_template, request, redirect, flash, url_for
 from YouLose import app
+from YouLose import db
+# from YouLose import Book
 from YouLose.forms import EnterStock
+from YouLose.methods import get_present_price
 
-def test(arg1,arg2):
-    return "You have bought {} at ${} per share".format(arg1,arg2)
+def test(stock):
+    teststr = get_present_price(stock)
+    return teststr
+
 
 @app.route('/')
 @app.route('/home', methods=['GET', 'POST'])
 def home():
-    form = EnterStock()
+    previous_stocks = ""
 
+    form = EnterStock()
 
     if request.method == "POST":
         if form.validate_on_submit():
-            flash(test(form.stock.data, form.date_bought.data))
+            flash(test(form.stock.data))
+            previous_stocks += "s"
+
+            #book1 = Book(title=form.stock.data)
+            #db.session.add(book1)
+            #db.session.commit()
+
             return redirect(url_for('home'))
     """Renders the home page."""
     return render_template(

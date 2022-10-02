@@ -28,6 +28,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(64), index=True, unique=True)
     password_hash = db.Column(db.String(128))
+    #total_profit = db.Column(db.Float)
     stocks_bought = db.relationship('Stock_Bought', backref='userid', lazy='dynamic')
 
     def set_password(self, password):
@@ -41,7 +42,7 @@ class User(UserMixin, db.Model):
         return '<User {}>'.format(self.username)
 
 class Stock_Bought(db.Model):
-    price_bought = db.Column(db.Numeric)
+    price_bought = db.Column(db.Float)
     profit = db.Column(db.Float)
     num_shares_bought = db.Column(db.Integer)
     stock_bought = db.Column(db.String(5), primary_key=True)

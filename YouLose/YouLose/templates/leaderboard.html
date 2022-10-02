@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+
+{{ message }}
+
+            {% endfor %}
+        {% endif %}
+{% endwith %}
+
+<h1>Leading gains</h1>
+<table>
+    <tr>
+        <th>Username</th>
+        <th>Stock bought</th>
+        <th>Profit</th>
+    </tr>
+    {% for row in gain_leaders %}
+    <tr>
+        <td>{{ row.username }}</td>
+        <td>{{ row.stock_bought }}</td>
+        <td>{{ row.profit }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h1>Leading losses</h1>
+<table>
+    <tr>
+        <th>Username</th>
+        <th>Stock bought</th>
+        <th>Loss</th>
+    </tr>
+    {% for row in loss_leaders %}
+    <tr>
+        <td>{{ row.username }}</td>
+        <td>{{ row.stock_bought }}</td>
+        <td>{{ row.profit }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+{% endblock %}

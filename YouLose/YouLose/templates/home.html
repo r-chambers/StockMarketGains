@@ -31,9 +31,17 @@
     </p>
 </form>
 
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+        <h2> {{ message }} </h2>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
 {% if current_user.is_authenticated %}
+        <h1> Your stocks </h1>
     {% if stock_count > 0 %}
-    <h1> Your stocks </h1>
     <table>
         <tr>
             <th>Stock bought</th>
@@ -48,10 +56,12 @@
             <td> {{ stock.num_shares_bought }}</td>
             <td>{{ stock.price_bought}} </td>
             <td> {{stock.stock_current_price}}</td>
-            <td> ${{ stock.profit }}</td>
+            <td> {{ stock.profit }}</td>
         </tr>
         {% endfor %}
     </table>
+    {% else %}
+    <p> You don't have any stocks yet! Add a stock using the form above.</p>
     {% endif %}
 {% endif %}
 {% endblock %}

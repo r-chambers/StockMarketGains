@@ -21,10 +21,20 @@ def test(stock):
 def profit(num_shares, stock_current_price, price_bought_at):
     return 30
 
+#RETURNS STRING WITH TICKER, GRAIN, and LOSTT
+def profit(num_shares, cur_price, old_price):
+    initial_investment = float(old_price) * int(num_shares)
+    new_investment = float(cur_price) * int(num_shares)
+    
+    return new_investment - initial_investment
+    
+    
+
 @app.route('/')
 @app.route('/home', methods=['GET', 'POST'])
 def home():
     form = EnterStock()
+    stocks = []
     stock_count = 0 
     
     if current_user.is_authenticated:
@@ -43,9 +53,15 @@ def home():
 
     if request.method == "POST":
         if form.validate_on_submit():
-            if current_user.is_authenticated:
-                new_stock_price = test(form.stock.data)
+            # get current price of current stock
+            new_stock_price = test(form.stock.data)
+            # calculate profit
+            stock_profit = profit(form.num_shares.data, new_stock_price, form.price.data)
+            flash("You bought {} shares of {} at ${} per share. Its current price is {}. You made a profit of ${}. Yay!".format(form.num_shares.data, form.stock.data, form.price.data, new_stock_price, stock_profit))
 
+
+            if current_user.is_authenticated:
+                # Add current stock price to data
                 check_stock_price = Stock_Prices.query.filter_by(stock_name=form.stock.data).first()
                 # if the stock we're getting the price for isn't in the stock_price database, then add it
                 if check_stock_price is None:
@@ -58,13 +74,12 @@ def home():
                 db.session.commit()
                 # Add user's stock to database
                 
-                # Check to see if user has already added a stock
+                # Check to see if user has already added this stock
                 check_sock = Stock_Bought.query.filter_by(stock_bought=form.stock.data, user_id=current_user.id).first()
                 if check_sock is not None:
                     flash("You've already added this stock")
                 else:
-                    # calculate profit
-                    stock_profit = profit(form.num_shares.data, new_stock_price, form.price.data)
+                    
                     # add the stock bought by the user to the database
                     stock_bought = Stock_Bought(price_bought=form.price.data, profit = stock_profit, num_shares_bought = form.num_shares.data, stock_bought=form.stock.data.upper(), user_id=current_user.id)
                     db.session.add(stock_bought)
@@ -80,6 +95,17 @@ def home():
 #book1 = Book(title=form.stock.data)
 #db.session.add(book1)
 #db.session.commit()
+
+@app.route('/leaderboard')
+def leaderboard():
+   # leaders = Stock_Bought.query.join(User).add_columns(User.id, User.username, Stock_Bought.stock_bought, Stock_Bought.profit)
+    gain_leaders = Stock_Bought.query.join(User).add_columns(User.id, User.username, Stock_Bought.stock_bought, Stock_Bought.profit).order_by(Stock_Bought.profit.desc()).filter(Stock_Bought.profit >= 0).limit(5)
+    loss_leaders = Stock_Bought.query.join(User).add_columns(User.id, User.username, Stock_Bought.stock_bought, Stock_Bought.profit).order_by(Stock_Bought.profit).filter(Stock_Bought.profit < 0).limit(5)
+   
+    #print(leaders.length())
+
+        
+    return render_template("leaderboard.html", title="Leaderboard", gain_leaders=gain_leaders, loss_leaders = loss_leaders)
 
 @app.route('/login', methods=["GET", "POST"])
 def login():

@@ -3,6 +3,8 @@
 {% block content %}
 <h1>Enter how many stocks you bought and what you paid</h1>
 
+<div style="text-align: right;"><img src="https://cdn.mos.cms.futurecdn.net/avQoSGU9uTjFCgtCW3Rrhk.jpg" alt="My Image" /></div>
+
 <form action="{{ url_for('home') }}" method="POST" novalidate>
     {{ form.hidden_tag() }}
     <p>
@@ -48,7 +50,7 @@
             <th>Number of shares</th>
             <th>Price at time of purchase</th>
             <th>Price now</th>
-            <th>Profit</th>
+            <th>Net change</th>
         </tr>
         {% for stock in stocks %}
         <tr>

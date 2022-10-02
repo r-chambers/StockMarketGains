@@ -6,6 +6,19 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+ h1 {
+        border:black; border-width:4px; border-style:solid;
+    }
+    .hello { 
+        color: black;
+    }
+    img{
+        float: right;    
+        width: 30%;
+        height: 10%;
+        
+    }
+
 table, td, th {
     border: 1px solid black;
     padding: 10px

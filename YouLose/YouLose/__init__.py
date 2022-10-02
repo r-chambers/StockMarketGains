@@ -14,7 +14,7 @@ app.config['SECRET_KEY'] = 'yfsKnjzzpj8dZrYQ'
 # configuring our database uri
 app.config["SQLALCHEMY_ECHO"] = True;
 #app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://{username}:{password}@10.42.0.134/{dbname}".format(db_user, db_pass, db_name)
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root:tootyfruitychickenbooty@127.0.0.1/youlose"
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root:CookieBookie345@127.0.0.1/youlose"
 
 db = SQLAlchemy(app)
 login = LoginManager(app)

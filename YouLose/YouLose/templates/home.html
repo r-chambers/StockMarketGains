@@ -30,14 +30,28 @@
         {{ form.submit }}
     </p>
 </form>
-{% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
-            <div class="stock-bought-msg">
-                {{ message }}
-            </div>
-            {% endfor %}
-        {% endif %}
-{% endwith %}
 
+{% if current_user.is_authenticated %}
+    {% if stock_count > 0 %}
+    <h1> Your stocks </h1>
+    <table>
+        <tr>
+            <th>Stock bought</th>
+            <th>Number of shares</th>
+            <th>Price at time of purchase</th>
+            <th>Price now</th>
+            <th>Profit</th>
+        </tr>
+        {% for stock in stocks %}
+        <tr>
+            <td>{{ stock.stock_bought }} </td>
+            <td> {{ stock.num_shares_bought }}</td>
+            <td>{{ stock.price_bought}} </td>
+            <td> {{stock.stock_current_price}}</td>
+            <td> ${{ stock.profit }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+{% endif %}
 {% endblock %}

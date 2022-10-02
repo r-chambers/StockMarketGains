@@ -18,6 +18,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root:tootyfruity
 
 db = SQLAlchemy(app)
 login = LoginManager(app)
+db.configure_mappers()
 
 @login.user_loader
 def load_user(id):
@@ -27,7 +28,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(64), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-    stocks_bought = db.relationship('Stock_Bought', backref='user', lazy='dynamic')
+    stocks_bought = db.relationship('Stock_Bought', backref='userid', lazy='dynamic')
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -41,11 +42,22 @@ class User(UserMixin, db.Model):
 
 class Stock_Bought(db.Model):
     price_bought = db.Column(db.Numeric)
+    profit = db.Column(db.Float)
+    num_shares_bought = db.Column(db.Integer)
     stock_bought = db.Column(db.String(5), primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    #stock_price = db.relationship("Stock_Prices", backref="stock_price", lazy='dynamic')
 
     def __repr__(self):
-        return '<Post {}>'.format(self.body)
+        return '<Post {}>'.format(self.stock_bought)
+
+
+class Stock_Prices(db.Model):
+    stock_name = db.Column(db.String(5), primary_key=True)
+    stock_current_price = db.Column(db.Numeric())
+
+    def __repr__(self):
+        return '<Stock name {}>'.format(self.stock_name)
 
 # Commit tables to database
 with app.app_context():
